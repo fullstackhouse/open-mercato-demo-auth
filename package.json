@@ -1,0 +1,90 @@
+{
+  "name": "@fullstackhouse/open-mercato-demo-auth",
+  "version": "0.1.0",
+  "description": "Dev-only login form prefill + auto-submit widget for Open Mercato applications",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./modules/demo_auth/index": {
+      "types": "./dist/modules/demo_auth/index.d.ts",
+      "default": "./dist/modules/demo_auth/index.js"
+    },
+    "./modules/demo_auth/widgets/components": {
+      "types": "./dist/modules/demo_auth/widgets/components.d.ts",
+      "default": "./dist/modules/demo_auth/widgets/components.js"
+    },
+    "./modules/demo_auth/widgets/LoginFormWrapper": {
+      "types": "./dist/modules/demo_auth/widgets/LoginFormWrapper.d.ts",
+      "default": "./dist/modules/demo_auth/widgets/LoginFormWrapper.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup && node scripts/add-use-client.mjs",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "@open-mercato/shared": "*",
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "@open-mercato/shared": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@mikro-orm/core": "^6.6.13",
+    "@mikro-orm/postgresql": "^6.6.13",
+    "@open-mercato/shared": "*",
+    "@testing-library/jest-dom": "^6.4.0",
+    "@testing-library/react": "^16.0.0",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "awilix": "^12.1.1",
+    "eslint": "^9.0.0",
+    "jsdom": "^25.0.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0",
+    "typescript-eslint": "^8.0.0",
+    "vitest": "^2.0.0",
+    "zod": "^3.25.76"
+  },
+  "keywords": [
+    "open-mercato",
+    "auth",
+    "login",
+    "dev-tools",
+    "widget"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fullstackhouse/open-mercato-demo-auth.git"
+  },
+  "author": "Full Stack House",
+  "license": "MIT"
+}
