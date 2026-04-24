@@ -1,6 +1,6 @@
 {
   "name": "@fullstackhouse/open-mercato-demo-auth",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Dev-only login form prefill + auto-submit widget for Open Mercato applications",
   "type": "module",
   "main": "./dist/index.js",

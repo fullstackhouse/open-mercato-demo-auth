@@ -1,5 +1,7 @@
 import { defineConfig } from 'tsup'
 
+const jsx = { jsx: 'automatic' as const }
+
 export default defineConfig([
   {
     entry: ['src/index.ts'],
@@ -10,6 +12,9 @@ export default defineConfig([
     sourcemap: true,
     treeshake: true,
     external: ['react', 'react-dom', '@open-mercato/shared'],
+    esbuildOptions: (options) => {
+      Object.assign(options, jsx)
+    },
   },
   {
     entry: {
@@ -24,5 +29,8 @@ export default defineConfig([
     sourcemap: true,
     treeshake: true,
     external: ['react', 'react-dom', '@open-mercato/shared'],
+    esbuildOptions: (options) => {
+      Object.assign(options, jsx)
+    },
   },
 ])
