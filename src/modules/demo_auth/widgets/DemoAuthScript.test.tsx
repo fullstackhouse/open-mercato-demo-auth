@@ -31,15 +31,6 @@ describe('DemoAuthScript', () => {
     expect(html).toContain('"password":"secret-123"')
   })
 
-  it('returns null in production builds even when env vars are set', async () => {
-    vi.stubEnv('NODE_ENV', 'production')
-    vi.stubEnv('DEMO_AUTH_LOGIN_EMAIL', 'demo@example.com')
-    vi.stubEnv('DEMO_AUTH_LOGIN_PASSWORD', 'secret-123')
-    const DemoAuthScript = await importScript()
-    const html = renderToStaticMarkup(<DemoAuthScript />)
-    expect(html).toBe('')
-  })
-
   it('returns null when both env vars are absent', async () => {
     const DemoAuthScript = await importScript()
     const html = renderToStaticMarkup(<DemoAuthScript />)

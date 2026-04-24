@@ -1,7 +1,8 @@
 // Server component. Reads DEMO_AUTH_LOGIN_EMAIL / DEMO_AUTH_LOGIN_PASSWORD at
 // request/render time and emits an inline <script> that populates
-// window.__DEMO_AUTH__ before client components hydrate. Returns null in
-// production builds, or when neither env var is set.
+// window.__DEMO_AUTH__ before client components hydrate. Returns null when
+// neither env var is set — which is how you keep production safe: leave
+// them unset on prod, set them on dev/preview.
 //
 // Consumers: render <DemoAuthScript /> inside the <head> of the root layout.
 
@@ -19,7 +20,6 @@ function encodeForInlineScript(value: unknown): string {
 }
 
 export function DemoAuthScript() {
-  if (process.env.NODE_ENV === 'production') return null
   const email = process.env[ENV_EMAIL_KEY] ?? ''
   const password = process.env[ENV_PASSWORD_KEY] ?? ''
   if (!email && !password) return null

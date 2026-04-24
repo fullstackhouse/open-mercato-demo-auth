@@ -2,7 +2,7 @@
 
 Dev-only login form prefill + auto-submit widget for [Open Mercato](https://github.com/open-mercato/open-mercato) applications. Skips the "type email, type password, click submit" ritual on every hot-reload.
 
-> **⚠️ Dev only.** Configured via server-side env vars and injected into the client as an inline `<script>` — the values never get baked into the production bundle. The override is also hard-disabled when `NODE_ENV === 'production'` as a safety net.
+> **⚠️ Dev only.** Configured via server-side env vars and injected into the client as an inline `<script>` — the values never get baked into the production bundle. **Keep `DEMO_AUTH_LOGIN_EMAIL` / `DEMO_AUTH_LOGIN_PASSWORD` unset on any environment you don't want this to run on.** That is the only gate: the `<DemoAuthScript />` server component emits nothing when both vars are empty.
 
 ## What it does
 
