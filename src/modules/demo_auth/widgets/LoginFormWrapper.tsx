@@ -2,26 +2,31 @@
 
 import { useEffect, type ComponentType, type ReactNode } from 'react'
 
-const DEFAULT_EMAIL = process.env.NEXT_PUBLIC_DEFAULT_LOGIN_EMAIL || ''
-const DEFAULT_PASSWORD = process.env.NEXT_PUBLIC_DEFAULT_LOGIN_PASSWORD || ''
-
-/** Delay before auto-submitting to let React process synthetic change events from prefilled inputs */
+/** Delay before auto-submitting so React processes synthetic change events from prefilled inputs */
 const AUTO_SUBMIT_DELAY_MS = 50
-
-/** How long to keep the MutationObserver attached waiting for the login form to render */
+/** Max time to wait for the form to mount via MutationObserver */
 const OBSERVER_FALLBACK_MS = 5000
+/** Global injected by DemoAuthScript on the server */
+const GLOBAL_KEY = '__DEMO_AUTH__'
 
-/**
- * Use the native HTMLInputElement value setter so React's internal tracking
- * picks up the programmatic change and fires synthetic onChange handlers.
- */
+type DemoAuthPayload = { email?: string; password?: string }
+
+function readPayload(): { email: string; password: string } {
+  if (typeof window === 'undefined') return { email: '', password: '' }
+  const payload = (window as unknown as Record<string, DemoAuthPayload | undefined>)[GLOBAL_KEY]
+  return {
+    email: payload?.email ?? '',
+    password: payload?.password ?? '',
+  }
+}
+
 function getNativeInputValueSetter(): ((v: string) => void) | undefined {
   try {
     if (typeof window !== 'undefined') {
       return Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set
     }
   } catch {
-    // Fallback: direct assignment will be used instead
+    // fall through
   }
   return undefined
 }
@@ -44,6 +49,7 @@ export interface LoginFormWrapperProps {
 
 export default function LoginFormWrapper({ Original, children }: LoginFormWrapperProps) {
   useEffect(() => {
+    const { email: DEFAULT_EMAIL, password: DEFAULT_PASSWORD } = readPayload()
     if (!DEFAULT_EMAIL && !DEFAULT_PASSWORD) return
 
     function tryPrefill(): boolean {

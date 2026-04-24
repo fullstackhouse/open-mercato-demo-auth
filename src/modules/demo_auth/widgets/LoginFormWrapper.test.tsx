@@ -21,6 +21,10 @@ function mountLoginForm(ready = true) {
   return { form, email, password }
 }
 
+function setDemoAuth(email: string, password: string) {
+  ;(window as unknown as Record<string, unknown>).__DEMO_AUTH__ = { email, password }
+}
+
 async function importWrapper() {
   vi.resetModules()
   const mod = await import('./LoginFormWrapper')
@@ -34,21 +38,19 @@ describe('LoginFormWrapper', () => {
 
   afterEach(() => {
     vi.useRealTimers()
-    vi.unstubAllEnvs()
     cleanup()
+    delete (window as unknown as Record<string, unknown>).__DEMO_AUTH__
     document.body.innerHTML = ''
   })
 
-  it('prefills both inputs and auto-submits when both env vars set', async () => {
-    vi.stubEnv('NEXT_PUBLIC_DEFAULT_LOGIN_EMAIL', 'demo@example.com')
-    vi.stubEnv('NEXT_PUBLIC_DEFAULT_LOGIN_PASSWORD', 'secret-123')
+  it('prefills both inputs and auto-submits when window.__DEMO_AUTH__ has both', async () => {
+    setDemoAuth('demo@example.com', 'secret-123')
     const { form, email, password } = mountLoginForm(true)
     const requestSubmit = vi.spyOn(form, 'requestSubmit').mockImplementation(() => {})
 
     const Wrapper = await importWrapper()
     render(<Wrapper Original={Original} />)
 
-    // useEffect runs synchronously enough for the initial tryPrefill
     await vi.advanceTimersByTimeAsync(0)
     expect(email.value).toBe('demo@example.com')
     expect(password.value).toBe('secret-123')
@@ -57,9 +59,8 @@ describe('LoginFormWrapper', () => {
     expect(requestSubmit).toHaveBeenCalledTimes(1)
   })
 
-  it('prefills only email when password is not set and does not auto-submit', async () => {
-    vi.stubEnv('NEXT_PUBLIC_DEFAULT_LOGIN_EMAIL', 'demo@example.com')
-    vi.stubEnv('NEXT_PUBLIC_DEFAULT_LOGIN_PASSWORD', '')
+  it('prefills only email when password is empty and does not auto-submit', async () => {
+    setDemoAuth('demo@example.com', '')
     const { form, email, password } = mountLoginForm(true)
     const requestSubmit = vi.spyOn(form, 'requestSubmit').mockImplementation(() => {})
 
@@ -72,9 +73,7 @@ describe('LoginFormWrapper', () => {
     expect(requestSubmit).not.toHaveBeenCalled()
   })
 
-  it('is a no-op when neither env var is set', async () => {
-    vi.stubEnv('NEXT_PUBLIC_DEFAULT_LOGIN_EMAIL', '')
-    vi.stubEnv('NEXT_PUBLIC_DEFAULT_LOGIN_PASSWORD', '')
+  it('is a no-op when window.__DEMO_AUTH__ is absent', async () => {
     const { form, email, password } = mountLoginForm(true)
     const requestSubmit = vi.spyOn(form, 'requestSubmit').mockImplementation(() => {})
 
@@ -88,8 +87,7 @@ describe('LoginFormWrapper', () => {
   })
 
   it('waits for the form to become ready via MutationObserver', async () => {
-    vi.stubEnv('NEXT_PUBLIC_DEFAULT_LOGIN_EMAIL', 'demo@example.com')
-    vi.stubEnv('NEXT_PUBLIC_DEFAULT_LOGIN_PASSWORD', 'secret-123')
+    setDemoAuth('demo@example.com', 'secret-123')
 
     const Wrapper = await importWrapper()
     render(<Wrapper Original={Original} />)
@@ -110,8 +108,7 @@ describe('LoginFormWrapper', () => {
   })
 
   it('disconnects the observer after the fallback timeout without errors', async () => {
-    vi.stubEnv('NEXT_PUBLIC_DEFAULT_LOGIN_EMAIL', 'demo@example.com')
-    vi.stubEnv('NEXT_PUBLIC_DEFAULT_LOGIN_PASSWORD', 'secret-123')
+    setDemoAuth('demo@example.com', 'secret-123')
 
     const Wrapper = await importWrapper()
     const { unmount } = render(<Wrapper Original={Original} />)

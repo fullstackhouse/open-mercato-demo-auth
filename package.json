@@ -1,6 +1,6 @@
 {
   "name": "@fullstackhouse/open-mercato-demo-auth",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Dev-only login form prefill + auto-submit widget for Open Mercato applications",
   "type": "module",
   "main": "./dist/index.js",
@@ -21,6 +21,10 @@
     "./modules/demo_auth/widgets/LoginFormWrapper": {
       "types": "./dist/modules/demo_auth/widgets/LoginFormWrapper.d.ts",
       "default": "./dist/modules/demo_auth/widgets/LoginFormWrapper.js"
+    },
+    "./modules/demo_auth/widgets/DemoAuthScript": {
+      "types": "./dist/modules/demo_auth/widgets/DemoAuthScript.d.ts",
+      "default": "./dist/modules/demo_auth/widgets/DemoAuthScript.js"
     }
   },
   "files": [

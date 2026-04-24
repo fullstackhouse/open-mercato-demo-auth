@@ -21,6 +21,7 @@ export default defineConfig([
       'modules/demo_auth/index': 'src/modules/demo_auth/index.ts',
       'modules/demo_auth/widgets/components': 'src/modules/demo_auth/widgets/components.ts',
       'modules/demo_auth/widgets/LoginFormWrapper': 'src/modules/demo_auth/widgets/LoginFormWrapper.tsx',
+      'modules/demo_auth/widgets/DemoAuthScript': 'src/modules/demo_auth/widgets/DemoAuthScript.tsx',
     },
     format: ['esm'],
     dts: true,
