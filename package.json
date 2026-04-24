@@ -1,6 +1,6 @@
 {
   "name": "@fullstackhouse/open-mercato-demo-auth",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Dev-only login form prefill + auto-submit widget for Open Mercato applications",
   "type": "module",
   "main": "./dist/index.js",
@@ -10,21 +10,13 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./modules/demo_auth/index": {
-      "types": "./dist/modules/demo_auth/index.d.ts",
-      "default": "./dist/modules/demo_auth/index.js"
+    "./DemoAuthScript": {
+      "types": "./dist/DemoAuthScript.d.ts",
+      "default": "./dist/DemoAuthScript.js"
     },
-    "./modules/demo_auth/widgets/components": {
-      "types": "./dist/modules/demo_auth/widgets/components.d.ts",
-      "default": "./dist/modules/demo_auth/widgets/components.js"
-    },
-    "./modules/demo_auth/widgets/LoginFormWrapper": {
-      "types": "./dist/modules/demo_auth/widgets/LoginFormWrapper.d.ts",
-      "default": "./dist/modules/demo_auth/widgets/LoginFormWrapper.js"
-    },
-    "./modules/demo_auth/widgets/DemoAuthScript": {
-      "types": "./dist/modules/demo_auth/widgets/DemoAuthScript.d.ts",
-      "default": "./dist/modules/demo_auth/widgets/DemoAuthScript.js"
+    "./DemoAuthAutofill": {
+      "types": "./dist/DemoAuthAutofill.d.ts",
+      "default": "./dist/DemoAuthAutofill.js"
     }
   },
   "files": [
@@ -42,14 +34,10 @@
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
-    "@open-mercato/shared": "*",
     "react": ">=18",
     "react-dom": ">=18"
   },
   "peerDependenciesMeta": {
-    "@open-mercato/shared": {
-      "optional": true
-    },
     "react": {
       "optional": true
     },
@@ -59,15 +47,11 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",
-    "@mikro-orm/core": "^6.6.13",
-    "@mikro-orm/postgresql": "^6.6.13",
-    "@open-mercato/shared": "*",
     "@testing-library/jest-dom": "^6.4.0",
     "@testing-library/react": "^16.0.0",
     "@types/node": "^20.0.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
-    "awilix": "^12.1.1",
     "eslint": "^9.0.0",
     "jsdom": "^25.0.0",
     "react": "^18.3.0",
@@ -75,8 +59,7 @@
     "tsup": "^8.0.0",
     "typescript": "^5.3.0",
     "typescript-eslint": "^8.0.0",
-    "vitest": "^2.0.0",
-    "zod": "^3.25.76"
+    "vitest": "^2.0.0"
   },
   "keywords": [
     "open-mercato",

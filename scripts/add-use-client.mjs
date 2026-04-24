@@ -1,8 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises'
 
 const files = [
-  'dist/modules/demo_auth/widgets/LoginFormWrapper.js',
-  'dist/modules/demo_auth/widgets/components.js',
+  'dist/DemoAuthAutofill.js',
 ]
 
 const DIRECTIVE = "'use client';\n"

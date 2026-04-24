@@ -12,7 +12,6 @@ async function importScript() {
 
 describe('DemoAuthScript', () => {
   beforeEach(() => {
-    vi.stubEnv('NODE_ENV', 'development')
     vi.stubEnv('DEMO_AUTH_LOGIN_EMAIL', '')
     vi.stubEnv('DEMO_AUTH_LOGIN_PASSWORD', '')
   })

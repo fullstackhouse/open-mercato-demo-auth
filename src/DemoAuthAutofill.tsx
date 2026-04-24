@@ -1,12 +1,12 @@
 'use client'
 
-import { useEffect, type ComponentType, type ReactNode } from 'react'
+import { useEffect } from 'react'
 
 /** Delay before auto-submitting so React processes synthetic change events from prefilled inputs */
 const AUTO_SUBMIT_DELAY_MS = 50
 /** Max time to wait for the form to mount via MutationObserver */
 const OBSERVER_FALLBACK_MS = 5000
-/** Global injected by DemoAuthScript on the server */
+/** Global populated by <DemoAuthScript /> on the server */
 const GLOBAL_KEY = '__DEMO_AUTH__'
 
 type DemoAuthPayload = { email?: string; password?: string }
@@ -42,12 +42,13 @@ function setInputValue(input: HTMLInputElement, value: string) {
   input.dispatchEvent(new Event('change', { bubbles: true }))
 }
 
-export interface LoginFormWrapperProps {
-  Original: ComponentType<{ children?: ReactNode }>
-  children?: ReactNode
-}
-
-export default function LoginFormWrapper({ Original, children }: LoginFormWrapperProps) {
+/**
+ * Mount once next to <DemoAuthScript /> in the root layout. When the global
+ * payload is present, watches for a ready login form (`form[data-auth-ready="1"]`
+ * with `input[name="email"]` / `input[name="password"]`) and prefills + submits
+ * it. No-op when the global is absent, so it's safe to always mount.
+ */
+export function DemoAuthAutofill() {
   useEffect(() => {
     const { email: DEFAULT_EMAIL, password: DEFAULT_PASSWORD } = readPayload()
     if (!DEFAULT_EMAIL && !DEFAULT_PASSWORD) return
@@ -108,5 +109,5 @@ export default function LoginFormWrapper({ Original, children }: LoginFormWrappe
     }
   }, [])
 
-  return <Original>{children}</Original>
+  return null
 }

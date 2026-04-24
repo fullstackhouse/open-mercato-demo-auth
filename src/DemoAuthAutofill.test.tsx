@@ -3,11 +3,6 @@
  */
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { render, cleanup } from '@testing-library/react'
-import type { ComponentType, ReactNode } from 'react'
-
-const Original: ComponentType<{ children?: ReactNode }> = ({ children }) => (
-  <div data-testid="original">{children}</div>
-)
 
 function mountLoginForm(ready = true) {
   const form = document.createElement('form')
@@ -25,13 +20,13 @@ function setDemoAuth(email: string, password: string) {
   ;(window as unknown as Record<string, unknown>).__DEMO_AUTH__ = { email, password }
 }
 
-async function importWrapper() {
+async function importComponent() {
   vi.resetModules()
-  const mod = await import('./LoginFormWrapper')
-  return mod.default
+  const mod = await import('./DemoAuthAutofill')
+  return mod.DemoAuthAutofill
 }
 
-describe('LoginFormWrapper', () => {
+describe('DemoAuthAutofill', () => {
   beforeEach(() => {
     vi.useFakeTimers()
   })
@@ -48,8 +43,8 @@ describe('LoginFormWrapper', () => {
     const { form, email, password } = mountLoginForm(true)
     const requestSubmit = vi.spyOn(form, 'requestSubmit').mockImplementation(() => {})
 
-    const Wrapper = await importWrapper()
-    render(<Wrapper Original={Original} />)
+    const DemoAuthAutofill = await importComponent()
+    render(<DemoAuthAutofill />)
 
     await vi.advanceTimersByTimeAsync(0)
     expect(email.value).toBe('demo@example.com')
@@ -64,8 +59,8 @@ describe('LoginFormWrapper', () => {
     const { form, email, password } = mountLoginForm(true)
     const requestSubmit = vi.spyOn(form, 'requestSubmit').mockImplementation(() => {})
 
-    const Wrapper = await importWrapper()
-    render(<Wrapper Original={Original} />)
+    const DemoAuthAutofill = await importComponent()
+    render(<DemoAuthAutofill />)
     await vi.advanceTimersByTimeAsync(100)
 
     expect(email.value).toBe('demo@example.com')
@@ -77,8 +72,8 @@ describe('LoginFormWrapper', () => {
     const { form, email, password } = mountLoginForm(true)
     const requestSubmit = vi.spyOn(form, 'requestSubmit').mockImplementation(() => {})
 
-    const Wrapper = await importWrapper()
-    render(<Wrapper Original={Original} />)
+    const DemoAuthAutofill = await importComponent()
+    render(<DemoAuthAutofill />)
     await vi.advanceTimersByTimeAsync(6000)
 
     expect(email.value).toBe('')
@@ -89,8 +84,8 @@ describe('LoginFormWrapper', () => {
   it('waits for the form to become ready via MutationObserver', async () => {
     setDemoAuth('demo@example.com', 'secret-123')
 
-    const Wrapper = await importWrapper()
-    render(<Wrapper Original={Original} />)
+    const DemoAuthAutofill = await importComponent()
+    render(<DemoAuthAutofill />)
 
     const { form, email, password } = mountLoginForm(false)
     const requestSubmit = vi.spyOn(form, 'requestSubmit').mockImplementation(() => {})
@@ -110,8 +105,8 @@ describe('LoginFormWrapper', () => {
   it('disconnects the observer after the fallback timeout without errors', async () => {
     setDemoAuth('demo@example.com', 'secret-123')
 
-    const Wrapper = await importWrapper()
-    const { unmount } = render(<Wrapper Original={Original} />)
+    const DemoAuthAutofill = await importComponent()
+    const { unmount } = render(<DemoAuthAutofill />)
     await vi.advanceTimersByTimeAsync(6000)
     expect(() => unmount()).not.toThrow()
   })
