@@ -18,7 +18,8 @@ Drop both components into your root layout. The server component injects the cre
 
 ```tsx
 // app/layout.tsx
-import { DemoAuthScript, DemoAuthAutofill } from '@fullstackhouse/open-mercato-demo-auth'
+import { DemoAuthAutofill } from '@fullstackhouse/open-mercato-demo-auth/DemoAuthAutofill'
+import { DemoAuthScript } from '@fullstackhouse/open-mercato-demo-auth/DemoAuthScript'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -36,6 +37,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 ```
 
 Both components short-circuit to nothing when the env vars aren't set, so they're safe to always mount.
+
+Import from subpaths — not from the package root — so Next.js / Turbopack reliably detects the server/client boundary on `DemoAuthAutofill`'s `'use client'` directive.
 
 ## Env vars
 
